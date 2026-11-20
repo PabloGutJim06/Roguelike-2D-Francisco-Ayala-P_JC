@@ -12,8 +12,13 @@ public class JugadorController : MonoBehaviour
 
     #region Variables
     private Vector2 movimiento;
+    private Rigidbody2D rb;
     #endregion
 
+    void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
     private void OnEnable()
     {
         moveAction.action.Enable();
@@ -27,11 +32,6 @@ public class JugadorController : MonoBehaviour
         ataqueBasico1.action.Disable();
         ataqueBasico2.action.Disable();     
     }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
@@ -39,7 +39,10 @@ public class JugadorController : MonoBehaviour
         movimiento = moveAction.action.ReadValue<Vector2>();
 
         movimiento = movimiento.normalized;
+    }
 
-        transform.Translate(movimiento * velocidad * Time.deltaTime);
+    private void FixedUpdate()
+    {
+        rb.MovePosition(rb.position + movimiento * velocidad * Time.deltaTime);
     }
 }
